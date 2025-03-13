@@ -18,7 +18,7 @@ var state = MOVE
 @onready var swordHitBox = $HitBoxPivot/SwordHitbox
 
 var input_vector = Vector2.ZERO
-var roll_vector = Vector2.LEFT
+var roll_vector = Vector2.DOWN
 
 func _ready() -> void:
 	animationTree.active = true

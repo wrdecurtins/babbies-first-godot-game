@@ -14,7 +14,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	stats.health = stats.health - 1
+	stats.health -= area.damage
 	knockback = area.knockback_vector * 120
 
 func _on_stats_no_health() -> void:
