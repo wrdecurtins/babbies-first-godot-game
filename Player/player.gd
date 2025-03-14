@@ -3,6 +3,7 @@ extends CharacterBody2D;
 @export var MAX_SPEED = 80
 @export var FRICTION = 400
 @export var ROLL_SPEED = MAX_SPEED * 1.25
+@export var HIT_INVICIBILITY = .5
 
 enum {
 	MOVE,
@@ -16,11 +17,14 @@ var state = MOVE
 @onready var animationTree = $AnimationTree
 @onready var animationState = animationTree.get('parameters/playback')
 @onready var swordHitBox = $HitBoxPivot/SwordHitbox
+@onready var playerStats = PlayerStats
+@onready var hurtbox = $HurtBox
 
 var input_vector = Vector2.ZERO
 var roll_vector = Vector2.DOWN
 
 func _ready() -> void:
+	playerStats.connect('no_health', queue_free)
 	animationTree.active = true
 	swordHitBox.knockback_vector = roll_vector
 
@@ -73,3 +77,9 @@ func roll_state(delta: float):
 	
 func roll_animation_finished():
 	state = MOVE
+
+
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	playerStats.health -= area.damage
+	hurtbox.start_invincibility(HIT_INVICIBILITY)
+	hurtbox.create_hit_effect()

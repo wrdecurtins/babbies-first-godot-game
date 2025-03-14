@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dgfo7eeo2djbt"]
+[gd_scene load_steps=18 format=3 uid="uid://dgfo7eeo2djbt"]
 
 [ext_resource type="Script" uid="uid://dyvgkxt1tcvg3" path="res://Enemies/bat.gd" id="1_g687e"]
 [ext_resource type="Texture2D" uid="uid://bi8otsc24eumu" path="res://Enemies/Bat.png" id="1_vut0d"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://or48mvkwhmy2" path="res://Hit and Hurt Boxes/hurt_box.tscn" id="3_va2ne"]
 [ext_resource type="PackedScene" uid="uid://fslgm1e0hwnh" path="res://stats.tscn" id="5_i84q7"]
 [ext_resource type="PackedScene" uid="uid://dsut171akgfjh" path="res://Enemies/player_detection_zone.tscn" id="6_nc5xu"]
+[ext_resource type="PackedScene" uid="uid://bd2p5aayq7n5" path="res://Hit and Hurt Boxes/hit_box.tscn" id="7_0g1cs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g687e"]
 atlas = ExtResource("1_vut0d")
@@ -60,6 +61,9 @@ height = 20.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_0g1cs"]
 radius = 73.0069
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ppg8i"]
+radius = 4.0
+
 [node name="Bat" type="CharacterBody2D"]
 collision_layer = 8
 collision_mask = 5
@@ -78,8 +82,8 @@ texture = ExtResource("2_va2ne")
 shape = SubResource("CircleShape2D_s2gqn")
 
 [node name="HurtBox" parent="." instance=ExtResource("3_va2ne")]
-collision_layer = 8
-collision_mask = 4
+collision_layer = 0
+collision_mask = 8
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
 position = Vector2(0, -14)
@@ -93,8 +97,17 @@ max_health = 2
 [node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
 shape = SubResource("CircleShape2D_0g1cs")
 
+[node name="HitBox" parent="." instance=ExtResource("7_0g1cs")]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(0, -16)
+shape = SubResource("CircleShape2D_ppg8i")
+
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
 [connection signal="no_health" from="Stats" to="." method="_on_stats_no_health"]
 
 [editable path="HurtBox"]
 [editable path="PlayerDetectionZone"]
+[editable path="HitBox"]

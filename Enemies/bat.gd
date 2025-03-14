@@ -18,10 +18,12 @@ var state = IDLE
 @onready var animatedSprite = $Bat
 @onready var stats = $Stats
 @onready var playerDetectionZone = $PlayerDetectionZone
+@onready var hurtbox = $HurtBox
 
 func _physics_process(delta: float) -> void:
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
 	velocity = knockback
+	move_and_slide()
 	
 	match(state):
 		IDLE:
@@ -36,7 +38,8 @@ func _physics_process(delta: float) -> void:
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	stats.health -= area.damage
-	knockback = area.knockback_vector * 120
+	knockback = area.knockback_vector * 150
+	hurtbox.create_hit_effect()
 
 func _on_stats_no_health() -> void:
 	var enemyDeathEfect = EnemyDeathEffect.instantiate()

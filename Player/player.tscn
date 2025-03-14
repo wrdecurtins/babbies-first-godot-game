@@ -1,9 +1,10 @@
-[gd_scene load_steps=56 format=3 uid="uid://c44ifxw5owrkv"]
+[gd_scene load_steps=58 format=3 uid="uid://c44ifxw5owrkv"]
 
 [ext_resource type="Script" uid="uid://drw1nhi7s80fv" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://djhmlrh0tj6w4" path="res://Player/Player.png" id="2_btcbx"]
 [ext_resource type="PackedScene" uid="uid://bd2p5aayq7n5" path="res://Hit and Hurt Boxes/hit_box.tscn" id="3_btcbx"]
 [ext_resource type="Script" uid="uid://ciwdpwpkxmyji" path="res://Player/sword_hitbox.gd" id="4_gwnis"]
+[ext_resource type="PackedScene" uid="uid://or48mvkwhmy2" path="res://Hit and Hurt Boxes/hurt_box.tscn" id="5_k53q1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tlwt5"]
 radius = 4.0
@@ -689,6 +690,10 @@ transitions = ["Idle", "Run", SubResource("AnimationNodeStateMachineTransition_4
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gwnis"]
 height = 32.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fhl08"]
+radius = 5.0
+height = 20.0
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_4ntmi")
@@ -725,12 +730,23 @@ gizmo_extents = 8.0
 
 [node name="SwordHitbox" parent="HitBoxPivot" instance=ExtResource("3_btcbx")]
 position = Vector2(15, 0)
-collision_layer = 4
-collision_mask = 8
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("4_gwnis")
 
 [node name="CollisionShape2D" parent="HitBoxPivot/SwordHitbox" index="0"]
 shape = SubResource("CapsuleShape2D_gwnis")
 disabled = true
 
+[node name="HurtBox" parent="." instance=ExtResource("5_k53q1")]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(0, -6)
+shape = SubResource("CapsuleShape2D_fhl08")
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
+
 [editable path="HitBoxPivot/SwordHitbox"]
+[editable path="HurtBox"]
