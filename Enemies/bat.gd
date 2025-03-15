@@ -9,6 +9,7 @@ enum {
 @export var FRICTION = 200
 @export var ACCELERATION = 300
 @export var MAX_SPEED = 50
+@export var INVINCIBILITY_DURATION = 0.3
 
 const EnemyDeathEffect = preload("res://Effects/enemy_death.tscn")
 
@@ -22,6 +23,7 @@ var randomStateSet = [IDLE, WANDER]
 @onready var hurtbox = $HurtBox
 @onready var softCollison = $SoftCollision
 @onready var wanderController = $WanderController
+@onready var animationPlayer = $AnimationPlayer
 
 func _ready():
 	randomize()
@@ -49,6 +51,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	stats.health -= area.damage
 	knockback = area.knockback_vector * 150
 	hurtbox.create_hit_effect()
+	hurtbox.start_invincibility(INVINCIBILITY_DURATION)
 
 func _on_stats_no_health() -> void:
 	var enemyDeathEfect = EnemyDeathEffect.instantiate()
@@ -91,3 +94,10 @@ func set_random_state():
 func update_wander():
 	state = randomStateSet.pick_random()
 	wanderController.start_wander_timer(randi_range(1, 3))
+
+
+func _on_hurt_box_invincibility_started() -> void:
+	animationPlayer.play("Start")
+
+func _on_hurt_box_invincibility_ended() -> void:
+	animationPlayer.play("Stop")

@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://cln1fd2ax7m"]
+[gd_scene load_steps=10 format=4 uid="uid://cln1fd2ax7m"]
 
 [ext_resource type="TileSet" uid="uid://ck0k81iyta045" path="res://World/tiles16.tres" id="1_aqk2v"]
 [ext_resource type="TileSet" uid="uid://tat4kxu37bbn" path="res://World/tiles32.tres" id="2_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://c44ifxw5owrkv" path="res://Player/player.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://klv67dcqkyam" path="res://World/bush.tscn" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://clbna4crleac2" path="res://camera_2d.tscn" id="3_ioo17"]
 [ext_resource type="PackedScene" uid="uid://7bi2tv1bgtdv" path="res://World/grass.tscn" id="5_036b0"]
 [ext_resource type="PackedScene" uid="uid://dgfo7eeo2djbt" path="res://Enemies/bat.tscn" id="6_dwbse"]
 [ext_resource type="PackedScene" uid="uid://peufkdj7xi5m" path="res://World/tree.tscn" id="7_gbfbk"]
@@ -27,9 +28,14 @@ tile_set = ExtResource("1_aqk2v")
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAIAAAABAP//AAABAAAAAAACAP//AAABAAAAAAACAAAAAAABAAIAAAAAAP//AAABAAAAAAABAAAAAAABAAIAAAADAAAAAAAGAAEAAAAEAAAAAAACAAEAAAADAP//AAABAAAAAAAEAP//AAACAAAAAAD//wAAAAAAAAIAAAD/////AAAAAAAAAAAKAAIAAAADAAAAAAAKAAMAAAAHAAIAAAAJAAMAAAAAAAAAAAAJAAQAAAAGAAIAAAAKAAUAAAACAAIAAAAKAAQAAAACAAEAAAD//wQAAAAAAAEAAAAAAAQAAAAFAAEAAAAAAAUAAAACAAIAAAD//wUAAAAAAAIAAAADAAEAAAAAAAIAAAAEAAEAAAACAAIAAAAIAAQAAAAGAAAAAAAJAAUAAAABAAIAAAAHAAQAAAAAAAMAAAAIAAUAAAAAAAIAAAABAAQAAAACAAIAAAABAAMAAAACAAAAAAAAAAMAAAABAAAAAAD//wMAAAAAAAAAAAA=")
 tile_set = ExtResource("2_aqk2v")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" parent="." instance=ExtResource("3_ioo17")]
 position = Vector2(213, 116)
-position_smoothing_enabled = true
+
+[node name="TopLeft" parent="Camera2D/Limits" index="0"]
+position = Vector2(-112, -63)
+
+[node name="BottomRight" parent="Camera2D/Limits" index="1"]
+position = Vector2(432, 272)
 
 [node name="YSort" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -110,3 +116,5 @@ offset_left = 3.0
 offset_top = 3.0
 offset_right = 43.0
 offset_bottom = 43.0
+
+[editable path="Camera2D"]
