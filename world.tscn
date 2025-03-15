@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cln1fd2ax7m"]
+[gd_scene load_steps=9 format=4 uid="uid://cln1fd2ax7m"]
 
 [ext_resource type="TileSet" uid="uid://ck0k81iyta045" path="res://World/tiles16.tres" id="1_aqk2v"]
 [ext_resource type="TileSet" uid="uid://tat4kxu37bbn" path="res://World/tiles32.tres" id="2_aqk2v"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://klv67dcqkyam" path="res://World/bush.tscn" id="2_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://7bi2tv1bgtdv" path="res://World/grass.tscn" id="5_036b0"]
 [ext_resource type="PackedScene" uid="uid://dgfo7eeo2djbt" path="res://Enemies/bat.tscn" id="6_dwbse"]
+[ext_resource type="PackedScene" uid="uid://peufkdj7xi5m" path="res://World/tree.tscn" id="7_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://b64535p57cioh" path="res://UI/health_ui.tscn" id="7_pkg7o"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -80,3 +82,21 @@ position = Vector2(280, 121)
 
 [node name="Grass5" parent="YSort/Grass" instance=ExtResource("5_036b0")]
 position = Vector2(312, 89)
+
+[node name="Tree" type="Node2D" parent="YSort"]
+y_sort_enabled = true
+
+[node name="Tree" parent="YSort/Tree" instance=ExtResource("7_gbfbk")]
+position = Vector2(253, 16)
+
+[node name="Tree3" parent="YSort/Tree" instance=ExtResource("7_gbfbk")]
+position = Vector2(158, 77)
+
+[node name="Tree2" parent="YSort/Tree" instance=ExtResource("7_gbfbk")]
+position = Vector2(240, 178)
+
+[node name="HealthUI" parent="." instance=ExtResource("7_pkg7o")]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 43.0
+offset_bottom = 43.0
