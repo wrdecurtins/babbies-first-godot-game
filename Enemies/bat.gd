@@ -14,12 +14,18 @@ const EnemyDeathEffect = preload("res://Effects/enemy_death.tscn")
 
 var knockback = Vector2.ZERO
 var state = IDLE
+var randomStateSet = [IDLE, WANDER]
 
 @onready var animatedSprite = $Bat
 @onready var stats = $Stats
 @onready var playerDetectionZone = $PlayerDetectionZone
 @onready var hurtbox = $HurtBox
 @onready var softCollison = $SoftCollision
+@onready var wanderController = $WanderController
+
+func _ready():
+	randomize()
+	state = randomStateSet.pick_random()
 
 func _physics_process(delta: float) -> void:
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
@@ -49,23 +55,39 @@ func _on_stats_no_health() -> void:
 	get_parent().add_child(enemyDeathEfect)
 	enemyDeathEfect.global_position = global_position
 	queue_free()
+	
+func accelerate_Toward(position):
+	var direction = global_position.direction_to(position).normalized()
+	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION)
 
 func _idle_state(delta: float):
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	seek_player()
+	set_random_state()
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 func _wander_state(delta: float):
-	pass
+	seek_player()
+	set_random_state()
+	accelerate_Toward(wanderController.target_position)
+	
+	if global_position.distance_to(wanderController.target_position) <= 2:
+		update_wander()
 	
 func _chase_state(delta: float):
 	var player = playerDetectionZone.player
 	if player != null:
-		#var direction = (player.global_position - global_position).normalized()
-		var direction = global_position.direction_to(player.global_position).normalized()
-		velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION)
+		accelerate_Toward(player.global_position)
 	else:
 		state = IDLE
 
 func seek_player():
 	if playerDetectionZone.can_see_player():
 		state = CHASE
+
+func set_random_state():
+	if wanderController.get_time_left() == 0:
+		update_wander()
+		
+func update_wander():
+	state = randomStateSet.pick_random()
+	wanderController.start_wander_timer(randi_range(1, 3))
