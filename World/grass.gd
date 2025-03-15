@@ -8,5 +8,5 @@ func create_grass_effect():
 	grassEffect.global_position = global_position
 	queue_free()
 
-func _on_hurt_box_area_entered(area: Area2D) -> void:
+func _on_hurt_box_area_entered(_area: Area2D) -> void:
 	create_grass_effect()

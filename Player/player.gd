@@ -5,6 +5,8 @@ extends CharacterBody2D;
 @export var ROLL_SPEED = MAX_SPEED * 1.25
 @export var HIT_INVICIBILITY = .5
 
+const PlayerHurtSound = preload("res://Player/player_hurt_sound.tscn")
+
 enum {
 	MOVE,
 	ROLL,
@@ -19,6 +21,7 @@ var state = MOVE
 @onready var swordHitBox = $HitBoxPivot/SwordHitbox
 @onready var playerStats = PlayerStats
 @onready var hurtbox = $HurtBox
+@onready var blinkAnimationPlayer = $BlinkAnimation
 
 var input_vector = Vector2.ZERO
 var roll_vector = Vector2.DOWN
@@ -64,13 +67,13 @@ func move_state(delta: float):
 
 	move_and_slide()
 
-func attack_state(delta: float):
+func attack_state(_delta: float):
 	animationState.travel('Attack')
 
 func attack_animation_finished():
 	state = MOVE
 	
-func roll_state(delta: float):
+func roll_state(_delta: float):
 	animationState.travel('Roll')
 	velocity = roll_vector * ROLL_SPEED
 	move_and_slide()
@@ -83,3 +86,12 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	playerStats.health -= area.damage
 	hurtbox.start_invincibility(HIT_INVICIBILITY)
 	hurtbox.create_hit_effect()
+	var playerHurtSound = PlayerHurtSound.instantiate()
+	get_tree().current_scene.add_child(playerHurtSound)
+
+
+func _on_hurt_box_invincibility_started() -> void:
+	blinkAnimationPlayer.play("Start")
+
+func _on_hurt_box_invincibility_ended() -> void:
+	blinkAnimationPlayer.play('Stop')

@@ -56,8 +56,8 @@ func _on_stats_no_health() -> void:
 	enemyDeathEfect.global_position = global_position
 	queue_free()
 	
-func accelerate_Toward(position):
-	var direction = global_position.direction_to(position).normalized()
+func accelerate_Toward(vector_pos):
+	var direction = global_position.direction_to(vector_pos).normalized()
 	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION)
 
 func _idle_state(delta: float):
@@ -65,7 +65,7 @@ func _idle_state(delta: float):
 	set_random_state()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
-func _wander_state(delta: float):
+func _wander_state(_delta: float):
 	seek_player()
 	set_random_state()
 	accelerate_Toward(wanderController.target_position)
@@ -73,7 +73,7 @@ func _wander_state(delta: float):
 	if global_position.distance_to(wanderController.target_position) <= 2:
 		update_wander()
 	
-func _chase_state(delta: float):
+func _chase_state(_delta: float):
 	var player = playerDetectionZone.player
 	if player != null:
 		accelerate_Toward(player.global_position)
